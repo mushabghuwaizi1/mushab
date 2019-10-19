@@ -1,5 +1,36 @@
-hi 
--project
--aplikasi translator
--forum diskusi
--kolaborasi dengan lebih bnyak expertist
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+img = cv2.imread('a.jpg')
+blur = cv2.GaussianBlur(img,(5,5),0)
+plt.subplot(121),plt.imshow(img),plt.title('Original')
+plt.xticks([]),plt.yticks([])
+plt.subplot(122),plt.imshow(blur),plt.title('Blurred')
+plt.xticks([]),plt.yticks([])
+plt.show()
+
+f, ax_array = plt.subplots(2, 2)
+f.set_figheight(10)
+f.set_figwidth(15)
+ax_array[0, 0].imshow(lion_arr, cmap = plt.get_cmap('gray'))
+ax_array[0, 0].set_title('Original Image')
+ax_array[0, 0].axis('off')
+ax_array[0, 1].imshow(lion_transf_edge1, cmap = plt.get_cmap('gray'))
+ax_array[0, 1].set_title('Edge Kernel 1')
+ax_array[0, 1].axis('off')
+ax_array[1, 0].imshow(lion_transf_edge2, cmap = plt.get_cmap('gray'))
+ax_array[1, 0].set_title('Edge Kernel 2')
+ax_array[1, 0].axis('off')
+ax_array[1, 1].imshow(lion_transf_edge3, cmap = plt.get_cmap('gray'))
+ax_array[1, 1].set_title('Edge Kernel 3')
+ax_array[1, 1].axis('off')
+
+padded_array = np.pad(lion_arr, (1, 1), 'constant')
+kernel = np.array([[0, 0, 0], [0, 1, 0], [0, 0, 0]])
+output_array = np.zeros(lion_arr.shape)
+
+for i in xrange(padded_array.shape[0]-2):
+    for j in xrange(padded_array.shape[1]-2):
+        temp_array = padded_array[i:i+3, j:j+3]
+        output_array[i, j] = np.sum(temp_array*kernel)
+
